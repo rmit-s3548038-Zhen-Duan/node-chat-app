@@ -20,8 +20,22 @@ io.on('connection', function(socket){
     createdAt: 123123
   });
 
+  //Broadcast message
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user joined',
+    createdAt: new Date().getTime()
+  });
+
+
   socket.on('createMessage', function(message){
     console.log('createMessage', message);
+
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
   });
 
   socket.on('disconnect', function(){
